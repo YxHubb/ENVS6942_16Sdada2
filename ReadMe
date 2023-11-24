@@ -1,6 +1,7 @@
 This repository is for a dada2 16s amplicon data processing pipeline from a class project.
 
 Full annotated scripts written in Rmarkdown can be found in "Scripts.md". 
+Scripts are adapted from "DADA2 Pipeline Tutorial (1.16)". Follow the link to the original tutorial scripts: https://benjjneb.github.io/dada2/tutorial.html
 
 Codes requiring manual changes are annotated with "MANUAL CHANGE REQUIRED" and "##" at the beginning of the command.
 
