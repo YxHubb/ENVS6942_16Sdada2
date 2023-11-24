@@ -1,4 +1,5 @@
-# IF not already installed, install the following packages. IF already installed, skip to next chunk
+# 16s dada2 amplicon processing pipeline
+#IF not already installed, install the following packages. IF already installed, skip to next chunk
 ```{r}
 ##install.packages("biostrings")
 ##install.packages("dada2")
@@ -31,7 +32,7 @@ list.files(path)
 plotQualityProfile(fnFs[1:2])
 plotQualityProfile(fnRs[1:2])
 ```
-# Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
+#Extract sample names, assuming filenames have format: SAMPLENAME_XXX.fastq
 ```{r}
 sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
 ```
@@ -64,7 +65,7 @@ dadaRs <- dada(filtRs, err=errR, multithread=FALSE)
 ```{r}
 mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
 ```
-# Inspect the merger data.frame from the first sample
+#Inspect the merger data.frame from the first sample
 ```{r}
 head(mergers[[1]])
 ```
@@ -73,11 +74,11 @@ head(mergers[[1]])
 seqtab <- makeSequenceTable(mergers)
 dim(seqtab)
 ```
-# Inspect distribution of sequence lengths
+#Inspect distribution of sequence lengths
 ```{r}
 table(nchar(getSequences(seqtab)))
 ```
-# remove chimeras and make an object seqtab.nochim
+#remove chimeras and make an object seqtab.nochim
 ```{r}
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)
@@ -88,7 +89,7 @@ sum(seqtab.nochim)/sum(seqtab)
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
 ```
-# If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
+#If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 ```{r}
 colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
 rownames(track) <- sample.names
