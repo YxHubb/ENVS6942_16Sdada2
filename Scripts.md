@@ -44,7 +44,7 @@ names(filtRs) <- sample.names
 ```
 #MANUAL CHANGE REQUIRED X Y. truncLen=c(x,y) cut forward reads at x basepairs and cut reverse reads at y basepairs according to quality scores
 ```{r}
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(x,y),
+##out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(x,y),
                      maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
                      compress=TRUE, multithread=FALSE) 
 head(out)
@@ -68,7 +68,7 @@ mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
 ```{r}
 head(mergers[[1]])
 ```
-#construct a sequence table
+#construct a sequence table seqtab
 ```{r}
 seqtab <- makeSequenceTable(mergers)
 dim(seqtab)
@@ -77,7 +77,7 @@ dim(seqtab)
 ```{r}
 table(nchar(getSequences(seqtab)))
 ```
-# remove chimeras and make an object
+# remove chimeras and make an object seqtab.nochim
 ```{r}
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
 dim(seqtab.nochim)
@@ -94,14 +94,17 @@ colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "n
 rownames(track) <- sample.names
 head(track)
 ```
-#first download taxonomy learning file into working directory
+#first download and place taxonomy learning files into the working directory
 #MANUAL CHANGE REQUIRED. assign taxanomy. irectory
 ```{r}
-taxa <- assignTaxonomy(seqtab.nochim,"CHANGEmeDIRECTORYPATH_LEARNINGFILE", multithread=FALSE)
+##taxa <- assignTaxonomy(seqtab.nochim,"CHANGEmeDIRECTORYPATH_LEARNINGFILE", multithread=FALSE)
 ```
 #look into the taxa
 ```{r}
-taxa.print <- taxa # Removing sequence rownames for display only
+taxa.print <- taxa 
+```
+#Removing sequence rownames for display only
+```{r}
 rownames(taxa.print) <- NULL
 head(taxa.print)
 ```
@@ -139,12 +142,11 @@ ps
 ```{r}
 ps.table<- psmelt(ps)
 ```
-
-#make phylum and order column into a factor so that ggplot can process it
+#make the phylum column into a factor so that ggplot can process it
 ```{r}
 ps.table$Phylum<- factor(ps.table$Phylum)
 ```
-#MANUAL CHANGE REQUIRED TITLE. make a ggplot now for phylum relative abundance - for bar plots
+#make a ggplot now for phylum relative abundance - for bar plots
 ```{r}
-ggplot(data = ps.table, mapping = aes(x=Sample,y=Abundance)) + geom_bar(aes(fill=Phylum), stat="identity", position = "fill")+labs(x="Sample", y="Abundance", title= "TITLE")
+ggplot(data = ps.table, mapping = aes(x=Sample,y=Abundance)) + geom_bar(aes(fill=Phylum), stat="identity", position = "fill")+labs(x="Sample", y="Abundance")
 ```
