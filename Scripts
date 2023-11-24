@@ -1,1 +1,20 @@
+# IF not already installed, install the following packages. IF already installed, skip to next chunk
+##install.packages("biostrings")
+##install.packages("dada2")
+##install.packages("phyloseq")
+##install.packages("ggplot2")
+#load required libraries
+library(biostrings)
+library(dada2)
+library(phyloseq)
+library(ggplot2)
+#MANUAL CHANGE REQUIRED. make an object of working directory - so don’t have to type out the path again
+##path <-"CHANGEME_DIRECTORYPATH"
+#list files in the "path" directory to doublecheck
+list.files(path)
+#make a fnFs object of forward reads and a fnRs file of reverse reads
+#MANUAL CHANGE REQUIRED for file pattern
+##fnFs <- sort(list.files(path, pattern="CHANGEME", full.names =TRUE))
+##fnRs <- sort(list.files(path, pattern="CHANGEME", full.names =TRUE))
+
 
